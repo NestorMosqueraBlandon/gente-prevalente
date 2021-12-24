@@ -1,0 +1,36 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String    @id @default(uuid())
+  email      String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  componeies Company[]
+}
+
+model Company {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  name           String
+  businessName   String
+  nit            Nit      @default(NIT)
+  identification Int
+  employes       Int
+  logo           String
+  User           User?    @relation(fields: [userId], references: [id])
+  userId         String?
+}
+
+enum Nit {
+  NIT
+  AT
+  ID
+}
